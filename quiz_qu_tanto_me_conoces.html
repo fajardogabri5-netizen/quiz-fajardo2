@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>¿Qué tanto me conoces? 🤫✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0b0f19;
+            color: #f8fafc;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .bg-gradient-ig {
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+        }
+
+        .glass-card {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-input {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-input:focus {
+            border-color: #ec4899;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .option-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option-btn:active {
+            transform: scale(0.97);
+        }
+
+        .animate-pop {
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.94) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(236, 72, 153, 0.8); }
+        }
+
+        /* PERMANENT WATERMARK FOOTER */
+        .watermark-badge {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999999;
+            pointer-events: auto;
+            user-select: none;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(236, 72, 153, 0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-3 sm:p-4 selection:bg-pink-500 selection:text-white pb-20">
+
+    <!-- PERMANENT MANDATORY WATERMARK -->
+    <a href="https://instagram.com/fajardo_cb" target="_blank" rel="noopener noreferrer" class="watermark-badge px-4 py-1.5 rounded-full flex items-center gap-2 text-xs font-bold tracking-wide hover:scale-105 transition-transform">
+        <span class="w-2 h-2 rounded-full bg-pink-500 animate-ping"></span>
+        <span class="text-slate-300">Created by <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 font-extrabold">@fajardo_cb</span> <span class="text-slate-400 text-[11px]">(siganme qlos)</span></span>
+    </a>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4">
+        <div id="toast-content" class="bg-slate-800 text-white px-5 py-3 rounded-full shadow-2xl border border-pink-500/30 flex items-center gap-2 text-xs sm:text-sm font-semibold">
+            <span id="toast-icon">✨</span>
+            <span id="toast-msg">Notificación</span>
+        </div>
+    </div>
+
+    <div class="w-full max-w-md mx-auto relative">
+        <div class="absolute -top-12 -left-12 w-40 h-40 bg-pink-600 rounded-full blur-3xl opacity-30 pointer-events-none"></div>
+        <div class="absolute -bottom-12 -right-12 w-40 h-40 bg-purple-600 rounded-full blur-3xl opacity-30 pointer-events-none"></div>
+
+        <!-- MAIN CARD CONTAINER -->
+        <div id="app-card" class="glass-card rounded-3xl p-5 sm:p-7 shadow-2xl relative z-10 overflow-hidden min-h-[580px] flex flex-col justify-between border border-white/10">
+
+            <!-- WELCOME SCREEN -->
+            <div id="screen-welcome" class="flex flex-col justify-between flex-1 animate-pop">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-400 text-xs font-bold tracking-wider uppercase">
+                            <span class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span> 10 Preguntas
+                        </div>
+                        <button onclick="showRankingScreen()" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-400 px-3 py-1.5 rounded-xl border border-amber-500/30 font-bold flex items-center gap-1 transition-colors">
+                            🏆 Ranking
+                        </button>
+                    </div>
+                    
+                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-400">
+                        ¿Qué tanto me conoces? 🤫
+                    </h1>
+                    <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-5">
+                        Responde a este quiz personalizado para ver si eres un amigo de verdad.
+                    </p>
+
+                    <!-- Host Info Box -->
+                    <div class="glass-input p-4 rounded-2xl mb-5 flex items-center justify-between border border-white/5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-ig p-0.5 flex items-center justify-center font-bold text-white shadow-md text-lg" id="host-avatar">
+                                👑
+                            </div>
+                            <div>
+                                <p class="text-[11px] text-slate-400 font-medium">Este quiz pertenece a:</p>
+                                <p class="text-base font-bold text-white" id="display-host-name">Fajardo</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Name -->
+                    <div class="space-y-2 mb-5">
+                        <label for="player-name" class="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                            Tu Nombre / Apodo (Para el Ranking):
+                        </label>
+                        <input type="text" id="player-name" placeholder="Ej: Mateo ✨" maxlength="20"
+                            class="w-full glass-input text-white rounded-2xl px-4 py-3 text-sm sm:text-base focus:outline-none transition-all placeholder:text-slate-500 font-medium">
+                    </div>
+                </div>
+
+                <!-- CTA Actions -->
+                <div class="space-y-2.5 pt-2">
+                    <button onclick="startQuiz()" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg pulse-glow transition-transform active:scale-95 text-sm sm:text-base flex items-center justify-center gap-2">
+                        <span>¡Empezar Quiz!</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                    
+                    <button onclick="openFullCreatorModal()" class="w-full bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-semibold py-3 px-5 rounded-2xl border border-slate-700 transition-colors text-xs sm:text-sm flex items-center justify-center gap-2">
+                        ✨ Crear Mi Propio Quiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- QUIZ INTERACTIVE SCREEN -->
+            <div id="screen-quiz" class="hidden flex-col justify-between flex-1 animate-pop">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-pink-400 uppercase tracking-wider" id="question-tracker">Pregunta 1 de 10</span>
+                        <span class="text-xs bg-slate-800/80 px-2.5 py-1 rounded-full text-slate-300 font-mono border border-slate-700" id="score-counter">Puntos: 0</span>
+                    </div>
+
+                    <div class="w-full bg-slate-800 rounded-full h-2 mb-5 overflow-hidden p-0.5 border border-slate-700/50">
+                        <div id="progress-bar" class="bg-gradient-to-r from-pink-500 to-purple-500 h-full rounded-full transition-all duration-300" style="width: 10%;"></div>
+                    </div>
+
+                    <div class="mb-5">
+                        <span id="question-emoji" class="text-3xl mb-2 block">🍕</span>
+                        <h2 id="question-text" class="text-lg sm:text-xl font-bold text-white leading-snug">
+                            ¿Pregunta?
+                        </h2>
+                    </div>
+
+                    <div id="options-container" class="space-y-2.5"></div>
+                </div>
+
+                <div id="feedback-bar" class="mt-3 p-2.5 rounded-2xl text-center text-xs sm:text-sm font-bold opacity-0 transition-opacity duration-200">
+                    &nbsp;
+                </div>
+            </div>
+
+            <!-- RESULTS SCREEN -->
+            <div id="screen-results" class="hidden flex-col justify-between flex-1 animate-pop">
+                <div class="text-center py-2">
+                    <span class="text-[11px] uppercase tracking-widest text-pink-400 font-bold">Resultado Final</span>
+                    
+                    <div class="my-3 relative inline-block">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-ig p-1 mx-auto shadow-2xl flex items-center justify-center">
+                            <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center text-4xl" id="result-emoji">
+                                🏆
+                            </div>
+                        </div>
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-pink-500 text-white font-extrabold text-[11px] px-2.5 py-0.5 rounded-full shadow-lg border border-slate-900" id="result-percentage">
+                            100%
+                        </div>
+                    </div>
+
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-white mb-1" id="result-title">¡Alma Gemela! 💖</h2>
+                    <p class="text-slate-300 text-xs mb-3" id="result-subtitle">
+                        <span class="font-bold text-pink-400" id="result-player-name">Amigo</span>, acertaste <span class="font-bold text-white" id="result-score">10/10</span>.
+                    </p>
+
+                    <div class="glass-input p-3.5 rounded-2xl mb-4 text-left border border-white/5 space-y-1">
+                        <div class="flex justify-between text-xs font-semibold text-slate-400">
+                            <span>Nivel de Amistad</span>
+                            <span id="result-badge-name" class="text-pink-400">Leyenda</span>
+                        </div>
+                        <p id="result-description" class="text-xs text-slate-300 leading-relaxed italic">
+                            "¡Nos conocemos a la perfección!"
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <button onclick="showRankingScreen()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:opacity-95 text-slate-950 font-extrabold py-3 px-5 rounded-2xl shadow-lg transition-transform active:scale-95 text-xs sm:text-sm flex items-center justify-center gap-2">
+                        🏆 Ver Ranking de Amigos
+                    </button>
+                    
+                    <button onclick="copyInstagramStoryText()" class="w-full bg-gradient-ig hover:opacity-95 text-white font-bold py-3 px-5 rounded-2xl shadow-lg transition-transform active:scale-95 text-xs flex items-center justify-center gap-2">
+                        <span>Compartir resultado en Historias</span>
+                    </button>
+
+                    <button onclick="openFullCreatorModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold py-2.5 px-4 rounded-2xl transition-colors text-xs flex items-center justify-center gap-2 border border-slate-700">
+                        ✨ Crear Mi Propio Quiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- RANKING SCREEN -->
+            <div id="screen-ranking" class="hidden flex-col justify-between flex-1 animate-pop">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-extrabold text-white flex items-center gap-2">
+                            <span>🏆</span> Ranking de Amigos
+                        </h2>
+                        <span class="text-[11px] bg-pink-500/10 text-pink-400 px-2.5 py-1 rounded-full font-bold border border-pink-500/20" id="ranking-quiz-owner">Quiz de Fajardo</span>
+                    </div>
+
+                    <div id="leaderboard-list" class="space-y-2 max-h-[320px] overflow-y-auto pr-1">
+                        <!-- Dynamic Leaderboard Items -->
+                    </div>
+                </div>
+
+                <div class="space-y-2 pt-3">
+                    <button onclick="restartQuiz()" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3 px-5 rounded-2xl text-xs hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                        🎮 Volver a Jugar Quiz
+                    </button>
+                    <button onclick="clearCurrentLeaderboard()" class="w-full text-slate-500 hover:text-slate-400 text-[11px] py-1 text-center">
+                        Borrar mi ranking local
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CREATE & SHARE CUSTOM QUIZ MODAL -->
+    <div id="creator-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 hidden">
+        <div class="glass-card w-full max-w-md rounded-3xl p-4 sm:p-5 border border-white/10 max-h-[92vh] flex flex-col justify-between shadow-2xl">
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <span>✨</span> Creador de Quiz Personalizado
+                    </h3>
+                    <button onclick="closeFullCreatorModal()" class="text-slate-400 hover:text-white text-lg p-1">✕</button>
+                </div>
+                <p class="text-[11px] text-slate-400 mb-3">Escribe tu nombre y configura tus 10 preguntas. Al guardar, se creará un enlace único para tus amigos:</p>
+
+                <div class="mb-3">
+                    <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">Tu Nombre (Anfitrión del Quiz):</label>
+                    <input type="text" id="custom-host-name" placeholder="Ej: Fajardo" class="w-full glass-input text-white rounded-xl px-3 py-2 text-xs focus:outline-none">
+                </div>
+                
+                <div class="space-y-3 overflow-y-auto max-h-[44vh] pr-1" id="custom-questions-list">
+                    <!-- Dynamic Question Forms -->
+                </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-800 flex flex-col gap-2 mt-2">
+                <button onclick="saveAndGenerateNewQuizLink()" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3 rounded-xl text-xs hover:opacity-90 transition-opacity shadow-lg flex items-center justify-center gap-1.5">
+                    <span>🔗 Guardar y Generar Enlace para IG</span>
+                </button>
+                <button onclick="closeFullCreatorModal()" class="w-full bg-slate-800 text-slate-300 font-semibold py-2 rounded-xl text-xs hover:bg-slate-700">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const appId = 'fajardo_cb_quiz';
+
+        // Default 10 Questions
+        const defaultQuizData = {
+            hostName: "Fajardo",
+            questions: [
+                { emoji: "🍕", question: "¿Cuál es mi comida favorita de fin de semana?", options: ["Pizza o Hamburguesa 🍕", "Sushi 🍣", "Tacos 🌮", "Postres y helado 🍦"], correct: 0 },
+                { emoji: "🍿", question: "¿Qué prefiero hacer en mi tiempo libre?", options: ["Ver películas o series 🎬", "Salir de fiesta 🪩", "Hacer ejercicio / Deportes ⚽", "Dormir todo el día 😴"], correct: 0 },
+                { emoji: "🎧", question: "¿Qué género de música escucho más?", options: ["Reggaeton / Urbano 🔥", "Pop / Indie 🎵", "Rock / Metal 🎸", "Electrónica / House 🎧"], correct: 0 },
+                { emoji: "👻", question: "¿Cuál es mi mayor fobia o temor?", options: ["Arañas / Insectos 🕷️", "La oscuridad 👻", "Las alturas 🏔️", "Quedarme sin batería 🔋"], correct: 0 },
+                { emoji: "💬", question: "¿Cuál es mi hábito en redes sociales?", options: ["Dejar en visto por días 👻", "Responder al instante ⚡", "Mandar audios largos 🎙️", "Puros stickers y memes 🐸"], correct: 0 },
+                { emoji: "✈️", question: "Si pudiera viajar mañana mismo, ¿a dónde iría?", options: ["Playa tropical y sol 🏝️", "Ciudad grande y compras 🏙️", "Montaña o clima frío ❄️", "Tour gastronómico 🍜"], correct: 0 },
+                { emoji: "☕", question: "¿Cómo prefiero empezar la mañana?", options: ["Un buen café ☕", "5 minutos más de sueño 💤", "Música a todo volumen 🎶", "Revisar celular en la cama 📱"], correct: 0 },
+                { emoji: "🎬", question: "¿Qué género de cine prefiero?", options: ["Acción y Ciencia Ficción 🚀", "Terror y Suspenso 😱", "Comedia para reír 🤣", "Drama y Romance 🍿"], correct: 0 },
+                { emoji: "🐶", question: "Mascota ideal:", options: ["Perro juguetón 🐶", "Gato tranquilo 🐱", "Ambos por igual 🐾", "Ninguno 🚫"], correct: 0 },
+                { emoji: "🎉", question: "Plan ideal para un sábado en la noche:", options: ["Fiesta y bailar 🪩", "Cena tranquila y plática 🍽️", "Maratón de series y comida 🛋️", "Gaming nocturno 🎮"], correct: 0 }
+            ]
+        };
+
+        let currentQuiz = { ...defaultQuizData };
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let playerName = "";
+        let canAnswer = true;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadQuizFromUrlOrStorage();
+            updateWelcomeScreen();
+        });
+
+        // ENCODE / DECODE QUIZ IN URL
+        function loadQuizFromUrlOrStorage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedQuiz = urlParams.get('quiz');
+
+            if (encodedQuiz) {
+                try {
+                    const decoded = JSON.parse(decodeURIComponent(atob(encodedQuiz)));
+                    if (decoded && decoded.questions && decoded.questions.length === 10) {
+                        currentQuiz = decoded;
+                        showToast(`Cargado el quiz de ${currentQuiz.hostName} ✨`, "🔥");
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Error al decodificar el quiz de la URL", e);
+                }
+            }
+
+            // Fallback to local storage
+            const saved = localStorage.getItem(`${appId}_my_custom_quiz`);
+            if (saved) {
+                try {
+                    currentQuiz = JSON.parse(saved);
+                } catch(e){}
+            }
+        }
+
+        function updateWelcomeScreen() {
+            document.getElementById('display-host-name').textContent = currentQuiz.hostName;
+            document.getElementById('host-avatar').textContent = currentQuiz.hostName.charAt(0).toUpperCase() || "👑";
+        }
+
+        function showToast(message, icon = "✨") {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = message;
+            document.getElementById('toast-icon').textContent = icon;
+            
+            toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
+            }, 3200);
+        }
+
+        function startQuiz() {
+            const nameInput = document.getElementById('player-name').value.trim();
+            if (!nameInput) {
+                showToast("Escribe tu nombre para entrar al ranking", "⚠️");
+                document.getElementById('player-name').focus();
+                return;
+            }
+
+            playerName = nameInput;
+            currentQuestionIndex = 0;
+            score = 0;
+            canAnswer = true;
+
+            switchScreen('screen-quiz');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            canAnswer = true;
+            const q = currentQuiz.questions[currentQuestionIndex];
+            const total = currentQuiz.questions.length;
+
+            document.getElementById('question-tracker').textContent = `Pregunta ${currentQuestionIndex + 1} de ${total}`;
+            document.getElementById('score-counter').textContent = `Puntos: ${score}`;
+            document.getElementById('progress-bar').style.width = `${((currentQuestionIndex + 1) / total) * 100}%`;
+
+            const feedbackBar = document.getElementById('feedback-bar');
+            feedbackBar.className = "mt-3 p-2.5 rounded-2xl text-center text-xs sm:text-sm font-bold opacity-0 transition-opacity duration-200";
+            feedbackBar.innerHTML = "&nbsp;";
+
+            document.getElementById('question-emoji').textContent = q.emoji || "❓";
+            document.getElementById('question-text').textContent = q.question;
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            q.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn w-full glass-input hover:bg-slate-800/80 text-left p-3.5 rounded-2xl text-xs sm:text-sm font-semibold text-slate-200 border border-white/10 flex items-center justify-between group`;
+                btn.onclick = () => selectAnswer(idx);
+                
+                btn.innerHTML = `
+                    <span class="flex-1 pr-2">${optText}</span>
+                    <span class="w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center text-xs text-slate-400 group-hover:border-pink-500 group-hover:text-pink-400 transition-colors">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selectedIndex) {
+            if (!canAnswer) return;
+            canAnswer = false;
+
+            const q = currentQuiz.questions[currentQuestionIndex];
+            const isCorrect = selectedIndex === q.correct;
+            const buttons = document.querySelectorAll('#options-container button');
+            const feedbackBar = document.getElementById('feedback-bar');
+
+            buttons.forEach((btn, idx) => {
+                btn.onclick = null;
+                if (idx === q.correct) {
+                    btn.classList.remove('glass-input');
+                    btn.classList.add('bg-emerald-500/20', 'border-emerald-500', 'text-emerald-300');
+                    btn.querySelector('span:last-child').innerHTML = '✓';
+                    btn.querySelector('span:last-child').className = 'w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-bold flex items-center justify-center text-xs';
+                } else if (idx === selectedIndex && !isCorrect) {
+                    btn.classList.remove('glass-input');
+                    btn.classList.add('bg-rose-500/20', 'border-rose-500', 'text-rose-300');
+                    btn.querySelector('span:last-child').innerHTML = '✕';
+                    btn.querySelector('span:last-child').className = 'w-6 h-6 rounded-full bg-rose-500 text-white font-bold flex items-center justify-center text-xs';
+                } else {
+                    btn.classList.add('opacity-40');
+                }
+            });
+
+            if (isCorrect) {
+                score++;
+                document.getElementById('score-counter').textContent = `Puntos: ${score}`;
+                feedbackBar.textContent = "¡Respuesta Correcta! 🎉";
+                feedbackBar.className = "mt-3 p-2.5 rounded-2xl text-center text-xs sm:text-sm font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 opacity-100 animate-pop";
+            } else {
+                feedbackBar.textContent = "¡Incorrecto! 😅";
+                feedbackBar.className = "mt-3 p-2.5 rounded-2xl text-center text-xs sm:text-sm font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30 opacity-100 animate-pop";
+            }
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuiz.questions.length) {
+                    renderQuestion();
+                } else {
+                    finishQuiz();
+                }
+            }, 1200);
+        }
+
+        function finishQuiz() {
+            const total = currentQuiz.questions.length;
+            const percentage = Math.round((score / total) * 100);
+
+            saveScoreToLeaderboard(playerName, score, total);
+
+            document.getElementById('result-player-name').textContent = playerName;
+            document.getElementById('result-score').textContent = `${score}/${total}`;
+            document.getElementById('result-percentage').textContent = `${percentage}% Match`;
+
+            let badge = "", title = "", desc = "", emoji = "";
+
+            if (percentage >= 90) {
+                emoji = "👑"; title = "¡Alma Gemela! 💖"; badge = "Mejor Amigo(a) Real";
+                desc = `¡Increíble ${playerName}! Respondiste ${score}/${total} bien. Nos conocemos perfecto. ✨`;
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            } else if (percentage >= 60) {
+                emoji = "🌟"; title = "¡Gran Amigo(a)! ✨"; badge = "Amigo Cercano";
+                desc = `¡Muy bien ${playerName}! Acertaste ${score} de ${total}. Me conoces bastante.`;
+            } else {
+                emoji = "👀"; title = "¡Hay que hablar más! 😂"; badge = "Seguidor de IG";
+                desc = `¡Ups ${playerName}! Acertaste ${score} de ${total}. Necesitamos salir a platicar urgente.`;
+            }
+
+            document.getElementById('result-emoji').textContent = emoji;
+            document.getElementById('result-title').textContent = title;
+            document.getElementById('result-badge-name').textContent = badge;
+            document.getElementById('result-description').textContent = desc;
+
+            switchScreen('screen-results');
+        }
+
+        function getLeaderboard() {
+            const key = `${appId}_lb_${currentQuiz.hostName.toLowerCase().replace(/\s+/g, '_')}`;
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : [];
+        }
+
+        function saveScoreToLeaderboard(name, userScore, total) {
+            const key = `${appId}_lb_${currentQuiz.hostName.toLowerCase().replace(/\s+/g, '_')}`;
+            let list = getLeaderboard();
+            list.push({ name, score: userScore, total, percentage: Math.round((userScore / total) * 100), date: new Date().toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }) });
+            list.sort((a, b) => b.score - a.score || b.percentage - a.percentage);
+            localStorage.setItem(key, JSON.stringify(list));
+        }
+
+        function clearCurrentLeaderboard() {
+            const key = `${appId}_lb_${currentQuiz.hostName.toLowerCase().replace(/\s+/g, '_')}`;
+            localStorage.removeItem(key);
+            renderLeaderboardList();
+            showToast("Ranking reseteado", "🧹");
+        }
+
+        function showRankingScreen() {
+            document.getElementById('ranking-quiz-owner').textContent = `Quiz de ${currentQuiz.hostName}`;
+            renderLeaderboardList();
+            switchScreen('screen-ranking');
+        }
+
+        function renderLeaderboardList() {
+            const container = document.getElementById('leaderboard-list');
+            const list = getLeaderboard();
+            container.innerHTML = '';
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">Aún no hay puntos en el ranking.<br>¡Sé el primero en jugar! 🔥</div>`;
+                return;
+            }
+
+            list.forEach((item, index) => {
+                let badgeIcon = `#${index + 1}`;
+                let badgeClass = "bg-slate-800 text-slate-400 border-slate-700";
+                if (index === 0) { badgeIcon = "🥇 1º"; badgeClass = "bg-amber-500/20 text-amber-300 border-amber-500/40"; }
+                else if (index === 1) { badgeIcon = "🥈 2º"; badgeClass = "bg-slate-300/20 text-slate-200 border-slate-400/40"; }
+                else if (index === 2) { badgeIcon = "🥉 3º"; badgeClass = "bg-orange-500/20 text-orange-300 border-orange-500/40"; }
+
+                const row = document.createElement('div');
+                row.className = `p-3 rounded-2xl glass-input flex items-center justify-between border border-white/5`;
+                row.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-extrabold px-2.5 py-1 rounded-xl border ${badgeClass}">${badgeIcon}</span>
+                        <div>
+                            <p class="text-xs font-bold text-white leading-none mb-1">${item.name}</p>
+                            <p class="text-[10px] text-slate-400">${item.date || 'Hoy'}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-extrabold text-pink-400">${item.score}/${item.total}</span>
+                        <span class="text-[10px] block text-slate-400">${item.percentage}% Match</span>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function switchScreen(screenId) {
+            ['screen-welcome', 'screen-quiz', 'screen-results', 'screen-ranking'].forEach(id => {
+                const el = document.getElementById(id);
+                if (id === screenId) { el.classList.remove('hidden'); el.classList.add('flex'); }
+                else { el.classList.add('hidden'); el.classList.remove('flex'); }
+            });
+        }
+
+        function restartQuiz() {
+            switchScreen('screen-welcome');
+            document.getElementById('player-name').value = '';
+        }
+
+        function copyInstagramStoryText() {
+            const total = currentQuiz.questions.length;
+            const shareText = `🤫 Respondí el quiz de 10 preguntas de ${currentQuiz.hostName}!\n\n🎯 Mi Puntaje: ${score}/${total}\n\n¿Puedes superarme? Entra aquí: Created by @fajardo_cb (siganme qlos)`;
+            copyToClipboard(shareText, "¡Copiado para tu Historia de IG! 📲");
+        }
+
+        function copyToClipboard(text, successMsg) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast(successMsg, "📋");
+            } catch (err) {
+                showToast("Copiado al portapapeles", "📋");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // CREATOR MODAL LOGIC
+        function openFullCreatorModal() {
+            document.getElementById('custom-host-name').value = currentQuiz.hostName;
+            renderCreatorQuestionsForm();
+            document.getElementById('creator-modal').classList.remove('hidden');
+        }
+
+        function closeFullCreatorModal() {
+            document.getElementById('creator-modal').classList.add('hidden');
+        }
+
+        function renderCreatorQuestionsForm() {
+            const list = document.getElementById('custom-questions-list');
+            list.innerHTML = '';
+
+            currentQuiz.questions.forEach((q, qIdx) => {
+                const item = document.createElement('div');
+                item.className = "p-3 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-2";
+                
+                let optionsHTML = '';
+                q.options.forEach((opt, oIdx) => {
+                    optionsHTML += `
+                        <div class="flex items-center gap-2">
+                            <input type="radio" name="custom-correct-${qIdx}" value="${oIdx}" ${q.correct === oIdx ? 'checked' : ''} class="accent-pink-500">
+                            <input type="text" id="opt-text-${qIdx}-${oIdx}" value="${opt}" class="flex-1 glass-input text-white rounded-lg px-2.5 py-1 text-xs focus:outline-none">
+                        </div>
+                    `;
+                });
+
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] font-bold text-pink-400">Pregunta ${qIdx + 1} de 10</span>
+                        <input type="text" id="emoji-${qIdx}" value="${q.emoji || '❓'}" class="w-8 glass-input text-center text-xs rounded-lg py-0.5">
+                    </div>
+                    <input type="text" id="question-title-${qIdx}" value="${q.question}" class="w-full glass-input text-white font-semibold rounded-lg px-2.5 py-1 text-xs">
+                    <div class="space-y-1 pt-1">
+                        <p class="text-[9px] text-slate-400 uppercase font-semibold">Respuesta Correcta:</p>
+                        ${optionsHTML}
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function saveAndGenerateNewQuizLink() {
+            const hostInput = document.getElementById('custom-host-name').value.trim();
+            if (!hostInput) {
+                showToast("Ingresa tu nombre", "⚠️");
+                return;
+            }
+
+            const newQuestions = [];
+            for (let qIdx = 0; qIdx < 10; qIdx++) {
+                const qTitle = document.getElementById(`question-title-${qIdx}`).value.trim();
+                const qEmoji = document.getElementById(`emoji-${qIdx}`).value.trim() || "❓";
+                const checkedRadio = document.querySelector(`input[name="custom-correct-${qIdx}"]:checked`);
+                
+                const opts = [];
+                for (let oIdx = 0; oIdx < 4; oIdx++) {
+                    const optVal = document.getElementById(`opt-text-${qIdx}-${oIdx}`).value.trim();
+                    opts.push(optVal || `Opción ${oIdx + 1}`);
+                }
+
+                newQuestions.push({
+                    emoji: qEmoji,
+                    question: qTitle || `Pregunta ${qIdx + 1}`,
+                    options: opts,
+                    correct: checkedRadio ? parseInt(checkedRadio.value) : 0
+                });
+            }
+
+            const updatedQuiz = { hostName: hostInput, questions: newQuestions };
+            
+            // Encode in base64 URL
+            const jsonString = JSON.stringify(updatedQuiz);
+            const encodedBase64 = btoa(encodeURIComponent(jsonString));
+            
+            const baseUrl = window.location.origin + window.location.pathname;
+            const fullShareableLink = `${baseUrl}?quiz=${encodedBase64}`;
+
+            // Save locally
+            localStorage.setItem(`${appId}_my_custom_quiz`, jsonString);
+            currentQuiz = updatedQuiz;
+
+            updateWelcomeScreen();
+            closeFullCreatorModal();
+
+            // Copy generated link
+            copyToClipboard(fullShareableLink, "¡Enlace único copiado! Ya puedes ponerlo en tu IG 📲");
+        }
+    </script>
+</body>
+</html>
