@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>¿Qué tanto me conoces?</title>
+    <title>¿Qué tanto conoces a Fajardo?</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -137,7 +137,7 @@
 
             <div>
                 <h1 class="text-3xl font-extrabold tracking-tight">
-                    ¿Qué tanto me conoces?
+                    ¿Qué tanto conoces a Fajardo?
                 </h1>
                 <p id="home-subtitle" class="text-slate-400 text-sm mt-2 px-4">
                     Responde este quiz de 10 preguntas y demuestra si realmente eres un@ de mis verdader@s amig@s.
@@ -150,7 +150,7 @@
                     <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
                         Tu Nombre o Apodo
                     </label>
-                    <input type="text" id="player-name" placeholder="Ej: Carlos G." 
+                    <input type="text" id="player-name" placeholder="Ej: Franklyn 🫂" 
                            class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-pink-500 transition-all">
                 </div>
 
@@ -215,7 +215,7 @@
 
                 <div>
                     <h2 class="text-2xl font-extrabold" id="result-title">¡Increíble!</h2>
-                    <p class="text-slate-400 text-xs mt-1" id="result-subtitle">Respondiste el quiz de <span id="owner-name-display" class="font-bold text-white">Carlos</span></p>
+                    <p class="text-slate-400 text-xs mt-1" id="result-subtitle">Respondiste el quiz de <span id="owner-name-display" class="font-bold text-white">Fajardo</span></p>
                 </div>
 
                 <div class="py-3 bg-slate-900/60 rounded-xl border border-slate-800">
@@ -361,57 +361,57 @@
         const db = firebase.database();
 
         const DEFAULT_QUIZ = {
-            owner: "Carlos",
+            owner: "Fajardo",
             questions: [
                 {
-                    q: "¿Cuál es mi comida o antojo favorito indiscutible?",
-                    options: ["Tacos / Comida Mexicana", "Hamburguesas", "Pizza", "Sushi"],
-                    correct: 0
-                },
-                {
-                    q: "Si salgo de viaje, ¿qué tipo de lugar prefiero?",
-                    options: ["Playa y calor", "Montaña / Frío", "Ciudad y turismo", "Quedarme en casa"],
+                    q: "1. ¿Cuál es mi comida favorita?",
+                    options: ["Tacos 🌮", "Milanesa 🥩", "Pizza 🍕", "Lasagna 🍝"],
                     correct: 1
                 },
                 {
-                    q: "¿Qué género musical escucho más seguido?",
-                    options: ["Reggaeton / Urbano", "Rock / Metal", "Pop", "Electrónica"],
+                    q: "2. ¿Cómo camina Fajardo?",
+                    options: ["Es súper guapo y camina normal 😎", "Camina muy rápido 🏃‍♂️", "Pega brinquitos 🦘", "Ni caminar le gusta 🛋️"],
                     correct: 0
                 },
                 {
-                    q: "¿Qué hago normalmente en mi tiempo libre?",
-                    options: ["Entrenar / Ejercicio", "Jugar videojuegos", "Tocar instrumento / Música", "Ver series y películas"],
-                    correct: 1
-                },
-                {
-                    q: "¿Soy una persona madrugadora o nocturna?",
-                    options: ["Madrugador/a (Amo la mañana)", "Nocturno/a (Me desvelo fácil)", "Depende del día", "Duermo todo el día"],
-                    correct: 1
-                },
-                {
-                    q: "¿Qué tipo de películas / series prefiero?",
-                    options: ["Acción y Ciencia Ficción", "Terror y Suspenso", "Comedia", "Drama y Romances"],
-                    correct: 0
-                },
-                {
-                    q: "Si pudiera tener cualquier mascota ideal, ¿cuál elegiría?",
-                    options: ["Perro", "Gato", "Peces / Exóticos", "Ninguna"],
-                    correct: 0
-                },
-                {
-                    q: "¿Cómo reacciono ante un problema o estrés?",
-                    options: ["Me mantengo analítico y tranquilo", "Me estreso rápido", "Pido ayuda de inmediato", "Busco distraerme con algo"],
-                    correct: 0
-                },
-                {
-                    q: "¿Qué superpoder preferiría tener?",
-                    options: ["Volar", "Invisibilidad", "Teletransportación", "Leer mentes"],
+                    q: "3. ¿Dónde estudió la primaria?",
+                    options: ["Advance 🏫", "San Marcos 📍", "El Shaddai 🎓", "Liceo mundo creativo escolar guate 🎒"],
                     correct: 2
                 },
                 {
-                    q: "¿Cuál es mi plan perfecto para un fin de semana?",
-                    options: ["Fiesta y salir con amigos", "Chill en casa viendo películas", "Viaje improvisado a la naturaleza", "Irme al gimnasio / Deporte"],
+                    q: "4. ¿Cuánto tiempo se perdió Fajardo?",
+                    options: ["Todo el finde semana 🔥", "Nunca se ha perdido es un niño de bien 😇", "Un día y medio 💀", "Tres días 👌"],
+                    correct: 2
+                },
+                {
+                    q: "5. ¿Qué le gusta hacer más?",
+                    options: ["Salir con amigos y de fiesta 🎉", "Irse a San Rafa sin permiso 🚗", "Perderse en un bosque 🌲", "Ir a Misa ⛪"],
+                    correct: 0
+                },
+                {
+                    q: "6. ¿Con quién se la pasa más seguido?",
+                    options: ["Franklyn 🫂", "Patrick 🫦", "Renato 🥊", "Chepe mota 🚬"],
                     correct: 1
+                },
+                {
+                    q: "7. ¿Qué género musical es mi favorito?",
+                    options: ["Corridos tumbados 🪕", "Pop 🎤", "Rock 🎸", "Reggaeton 🎶"],
+                    correct: 3
+                },
+                {
+                    q: "8. ¿Tengo algo que me guste mucho consumir o algún vicio?",
+                    options: ["Alcohol 🍷", "Hasta tierra se mete ☁️", "Nadota controla muy bien sus impulsos 😇", "Parece chimenea 🚬"],
+                    correct: 3
+                },
+                {
+                    q: "9. ¿Qué tipo de género de película me gusta más?",
+                    options: ["Aventura / Acción 🎬", "Terror 👻", "Comedia 😂", "Amor 💖"],
+                    correct: 0
+                },
+                {
+                    q: "10. ¿Cómo le va en sus relaciones?",
+                    options: ["Es bien mujeriego 😏", "Traumado hasta la quinta M... 💔", "Es un partidazo 🌟", "Está bien Guapoperfectoasombrosoincreibleinteligentedetergenteesculpido ✨"],
+                    correct: 0
                 }
             ]
         };
@@ -537,12 +537,12 @@
         function finishQuiz() {
             document.getElementById('progress-bar').style.width = '100%';
             
-            savePublicScore(playerName, score, currentQuizData.owner || 'Carlos');
+            savePublicScore(playerName, score, currentQuizData.owner || 'Fajardo');
 
             document.getElementById('final-score').innerText = `${score} / 10`;
             const pct = Math.round((score / 10) * 100);
             document.getElementById('score-percentage').innerText = `${pct}% de Aciertos`;
-            document.getElementById('owner-name-display').innerText = currentQuizData.owner || 'tu amigo';
+            document.getElementById('owner-name-display').innerText = currentQuizData.owner || 'Fajardo';
 
             let badge = "🥇";
             let title = "¡Increíble!";
@@ -645,7 +645,7 @@
         }
 
         function shareResults() {
-            const text = `🔥 ¡Hice el quiz de ${currentQuizData.owner || 'mi amigo'} y saqué ${score}/10 puntos! ¿Podrás superarme? \n\nResponde el tuyo aquí: ${window.location.href}`;
+            const text = `🔥 ¡Hice el quiz de ${currentQuizData.owner || 'Fajardo'} y saqué ${score}/10 puntos! ¿Podrás superarme? \n\nResponde el tuyo aquí: ${window.location.href}`;
             navigator.clipboard.writeText(text).then(() => {
                 showToast("¡Resumen copiado! Listo para pegar en tu historia de IG", "fa-instagram");
             }).catch(() => {
@@ -696,7 +696,7 @@
         }
 
         function generateCustomLink() {
-            const ownerName = document.getElementById('creator-name').value.trim() || 'Amigo';
+            const ownerName = document.getElementById('creator-name').value.trim() || 'Fajardo';
             const newQuestions = [];
 
             for (let qIdx = 0; qIdx < 10; qIdx++) {
